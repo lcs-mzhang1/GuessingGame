@@ -44,6 +44,11 @@ struct GuessingGameView: View {
     @State var message: String = "I'm thinking of a number from \(lowestNumber) to \(highestNumber)."
     @State var messageSymbol: String = "questionmark.circle.fill"
     @State var messageColor: Color = Color.indigo
+    
+    @State var lowerMessage: String = ""
+    
+    @State var lowerGuess: Int = lowestNumber
+    @State var upperGuess: Int = highestNumber
 
     // Becomes true when the player finds the secret number.
     @State var gameIsOver: Bool = false
@@ -74,6 +79,9 @@ struct GuessingGameView: View {
                     .foregroundStyle(messageColor)
                 Text(message)
                     .font(.title2)
+                    .multilineTextAlignment(.center)
+                Text(lowerMessage)
+                    .font(.system(size:10 , weight: .medium))
                     .multilineTextAlignment(.center)
             }
             .padding()
@@ -147,7 +155,7 @@ struct GuessingGameView: View {
 
         // One more guess has been made.
         guessCount += 1
-
+        
         if guess == secretNumber {
             message = "Yes! \(secretNumber) is my number, you took a total of \(guessCount) guesses."
             messageSymbol = "star.circle.fill"
@@ -158,11 +166,23 @@ struct GuessingGameView: View {
                 message = "\(guess) is smaller than my number. Try again."
                 messageSymbol = "xmark.circle.fill"
                 messageColor = Color.orange
+                if lowerGuess < guess {
+                    lowerGuess = guess
+                }
             } else {
                 message = "\(guess) is larger than my number. Try again."
                 messageSymbol = "xmark.circle.fill"
                 messageColor = Color.orange
+                if upperGuess > guess {
+                    upperGuess = guess
+                }
             }
+        }
+        
+        lowerMessage = "The range of numbers the answer is in is from \(lowerGuess) to \(upperGuess), the best guess right now is \((lowerGuess + upperGuess) / 2)."
+        
+        if gameIsOver == true {
+            lowerMessage = ""
         }
     }
 
