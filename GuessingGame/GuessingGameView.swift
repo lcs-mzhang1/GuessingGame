@@ -164,14 +164,14 @@ struct GuessingGameView: View {
         } else {
             if guess <= secretNumber {
                 message = "\(guess) is smaller than my number. Try again."
-                messageSymbol = "xmark.circle.fill"
+                messageSymbol = "arrowshape.up"
                 messageColor = Color.orange
                 if lowerGuess < guess {
                     lowerGuess = guess
                 }
             } else {
                 message = "\(guess) is larger than my number. Try again."
-                messageSymbol = "xmark.circle.fill"
+                messageSymbol = "arrowshape.down"
                 messageColor = Color.orange
                 if upperGuess > guess {
                     upperGuess = guess
@@ -223,9 +223,12 @@ struct GuessingGameView: View {
         secretNumber = Int.random(in: lowestNumber...highestNumber)
         guess = (lowestNumber + highestNumber) / 2
         guessCount = 0
+        lowerGuess = lowestNumber
+        upperGuess = highestNumber
         message = "I'm thinking of a new number from \(lowestNumber) to \(highestNumber)."
         messageSymbol = "questionmark.circle.fill"
         messageColor = Color.indigo
+        lowerMessage = ""
         gameIsOver = false
     }
 }
